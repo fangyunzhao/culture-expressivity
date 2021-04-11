@@ -2,8 +2,12 @@
 #   Custom Gitignore
 #===============================================================================
 
+
 /openface/*
 !/openface/.placeholder
 
 /raw/*
 !/raw/.placeholder
+
+/tmp_analysis/*
+!/tmp_analysis/.placeholder
