@@ -1,0 +1,3 @@
+[submodule "EmoPy"]
+	path = EmoPy
+	url = https://github.com/thoughtworksarts/EmoPy.git

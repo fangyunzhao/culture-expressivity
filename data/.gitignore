@@ -11,3 +11,10 @@
 
 /tmp_analysis/*
 !/tmp_analysis/.placeholder
+
+/emotion/*
+!/emotion/.placeholder
+
+
+/alt_openface_old_protocol/*
+!/alt_openface_old_protocol/.placeholder
