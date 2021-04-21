@@ -18,3 +18,6 @@
 
 /alt_openface_old_protocol/*
 !/alt_openface_old_protocol/.placeholder
+
+/final/*
+!/final/.placeholder

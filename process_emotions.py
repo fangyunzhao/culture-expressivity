@@ -16,20 +16,34 @@ if __name__ == "__main__":
     video_dir = sys.argv[1]
     result_dir = sys.argv[2]
 
-    files = [(os.path.join(video_dir,f), os.path.join(result_dir,f)) for f in os.listdir(video_dir) if os.path.isfile(os.path.join(video_dir,f))]
+    files = [(os.path.join(video_dir,f), os.path.join(result_dir,os.path.splitext(f)[0]+'.csv')) for f in os.listdir(video_dir) if os.path.isfile(os.path.join(video_dir,f))]
 
     target_emotions = ['anger', 'fear', 'calm', 'sadness', 'happiness', 'surprise', 'disgust']
     model = FERModel(target_emotions, verbose=True)
 
+    temp_file = os.path.join(result_dir,'temp_img.jpg')
+
     for (inF, outF) in files:
         cap = cv2.VideoCapture(inF)
-        while cap.isOpened():
-            ret, frame = cap.read()
-            print(ret)
 
-            v = model.predict(frame)
-            print(v)
-            break
+        data = []
+
+        flag = True
+        frameId = 0
+        while cap.isOpened() and flag:
+            flag, frame = cap.read()
+
+            if flag:
+                cv2.imwrite(temp_file,frame)
+
+                v = model.predict(temp_file)
+
+                data.append([frameId,v])
+                print(frameId)
+
+                frameId += 1
 
         cap.release()
-        break
+
+        df = pd.DataFrame(data, columns=['frameId','emotion'])
+        df.to_csv(outF, index=False)
