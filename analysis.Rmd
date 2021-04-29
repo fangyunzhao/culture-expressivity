@@ -1,0 +1,250 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+umap
+
+
+```{r}
+library(lme4)
+dat_au = read.csv("/Users/fangyunzhao/Google Drive/Courses/CS 839/Project presentation/data_dtw/action_unit.csv")
+
+dat_au = na.omit(dat_au)
+str(dat_au)
+
+dat_au$genderC = varRecode(dat_au$gender, c('F', 'M', 'mixed'), c(1, -1, NA))
+
+m1 = lmer(norDist ~ score * task + (task|X), data = dat_au, 
+          verbose = T, control=lmerControl(check.nobs.vs.nRE="ignore"))
+
+summary(m1)
+```
+
+
+```{r}
+library(car)
+Anova(m1, type = 3, test = 'F')
+```
+
+
+```{r}
+m1 = lmer(aveCost ~ score * task + (task|X), data = dat_au, 
+          verbose = T, control=lmerControl(check.nobs.vs.nRE="ignore"))
+
+summary(m1)
+```
+
+
+```{r}
+Anova(m1, type = 3, test = 'F')
+```
+
+
+```{r}
+dat_au_task1 = dat_au[dat_au$task == 'sandwich',]
+dat_au_task2 = dat_au[dat_au$task == 'BART',]
+dat_au_task3 = dat_au[dat_au$task == 'JENGA',]
+
+
+m1_1 = lm(aveCost ~ score + genderC, data =dat_au_task1)
+modelSummary(m1_1)
+```
+
+```{r}
+library(ggplot2)
+
+dat_au = na.omit(dat_au)
+plot = ggplot(dat_au, aes(x = score, y = aveCost, color = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  facet_wrap(~ task) +
+  theme_bw() +
+  xlab('Ancestral Diversity Score') + ylab('Average Cost to Synchrony') +
+  scale_colour_discrete(name = 'Gender',
+                        breaks = c('F', 'M'),
+                        labels = c('Female', 'Male'))
+
+plot
+
+```
+
+
+
+```{r}
+m1_2 = lm(aveCost ~ score + genderC, data =dat_au_task2)
+modelSummary(m1_2)
+```
+
+```{r}
+m1_3 = lm(aveCost ~ score + genderC, data =dat_au_task3)
+modelSummary(m1_3)
+```
+
+
+```{r}
+
+```
+
+
+
+
+```{r}
+
+dat_alt_enc = read.csv("/Users/fangyunzhao/Google Drive/Courses/CS 839/Project presentation/data_dtw/alt_enc.csv")
+
+dat_alt_enc$genderC = varRecode(dat_alt_enc$gender, c('F', 'M', 'mixed'), c(1, -1, NA))
+dat_alt_enc = na.omit(dat_alt_enc)
+str(dat_alt_enc)
+
+m1 = lmer(aveCost ~ score * task + (task|X), data = dat_alt_enc, 
+          verbose = T, control=lmerControl(check.nobs.vs.nRE="ignore"))
+
+summary(m1)
+```
+
+
+
+```{r}
+Anova(m1, type = 3, test = 'F')
+```
+
+
+
+```{r}
+library(ggplot2)
+
+plot = ggplot(dat_alt_enc, aes(x = score, y = aveCost, color = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  facet_wrap(~ task)+
+  theme_bw() +
+  xlab('Ancestral Diversity Score') + ylab('Average Cost to Synchrony') +
+  scale_colour_discrete(name = 'Gender',
+                        breaks = c('F', 'M'),
+                        labels = c('Female', 'Male'))
+
+plot
+
+```
+
+
+```{r}
+
+dat_enc = read.csv("/Users/fangyunzhao/Google Drive/Courses/CS 839/Project presentation/data_dtw/enc.csv")
+
+dat_enc$genderC = varRecode(dat_enc$gender, c('F', 'M', 'mixed'), c(1, -1, NA))
+dat_enc = na.omit(dat_enc)
+str(dat_enc)
+
+m1 = lmer(aveCost ~ score * task + (task|X), data = dat_enc, 
+          verbose = T, control=lmerControl(check.nobs.vs.nRE="ignore"))
+
+summary(m1)
+```
+
+
+
+```{r}
+Anova(m1, type = 3, test = 'F')
+```
+
+
+
+```{r}
+library(ggplot2)
+
+plot = ggplot(dat_enc, aes(x = score, y = aveCost, color = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  facet_wrap(~ task)+
+  theme_bw() +
+  xlab('Ancestral Diversity Score') + ylab('Average Cost to Synchrony') +
+  scale_colour_discrete(name = 'Gender',
+                        breaks = c('F', 'M'),
+                        labels = c('Female', 'Male'))
+
+plot
+
+```
+
+
+
+```{r}
+
+dat_pca = read.csv("/Users/fangyunzhao/Google Drive/Courses/CS 839/Project presentation/data_dtw/pca.csv")
+
+dat_pca$genderC = varRecode(dat_pca$gender, c('F', 'M', 'mixed'), c(1, -1, NA))
+dat_pca = na.omit(dat_pca)
+str(dat_pca)
+
+m1 = lmer(aveCost ~ score * task + (task|X), data = dat_pca, 
+          verbose = T, control=lmerControl(check.nobs.vs.nRE="ignore"))
+
+summary(m1)
+```
+
+
+
+```{r}
+Anova(m1, type = 3, test = 'F')
+```
+
+
+
+```{r}
+library(ggplot2)
+
+plot = ggplot(dat_pca, aes(x = score, y = aveCost, color = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  facet_wrap(~ task)+
+  theme_bw() +
+  xlab('Ancestral Diversity Score') + ylab('Average Cost to Synchrony') +
+  scale_colour_discrete(name = 'Gender',
+                        breaks = c('F', 'M'),
+                        labels = c('Female', 'Male'))
+
+plot
+
+```
+
+
+```{r}
+
+dat_umap = read.csv("/Users/fangyunzhao/Google Drive/Courses/CS 839/Project presentation/data_dtw/umap.csv")
+
+dat_umap$genderC = varRecode(dat_umap$gender, c('F', 'M', 'mixed'), c(1, -1, NA))
+dat_umap = na.omit(dat_umap)
+str(dat_umap)
+
+m1 = lmer(aveCost ~ score * task + (task|X), data = dat_umap, 
+          verbose = T, control=lmerControl(check.nobs.vs.nRE="ignore"))
+
+summary(m1)
+```
+
+
+
+```{r}
+Anova(m1, type = 3, test = 'F')
+```
+
+
+
+```{r}
+library(ggplot2)
+
+plot = ggplot(dat_umap, aes(x = score, y = aveCost, color = gender)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  facet_wrap(~ task)+
+  theme_bw() +
+  xlab('Ancestral Diversity Score') + ylab('Average Cost to Synchrony') +
+  scale_colour_discrete(name = 'Gender',
+                        breaks = c('F', 'M'),
+                        labels = c('Female', 'Male'))
+
+plot
+
+```
