@@ -19,7 +19,7 @@ means more synchrony).
 
 Please refer to this diagram of our pipeline,
 
-![Image of our model pipeline](https://github.com/curthenrichs/culture-expressivity/blob/master/pipeline.png?raw=true)
+![Image of our model pipeline](https://github.com/fangyunzhao/culture-expressivity/blob/master/pipeline.png?raw=true)
 
 Our code was primarily written in python using jupyter notebooks. We also have a
 bit of R analysis code at the end.
